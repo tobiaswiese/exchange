@@ -1,13 +1,23 @@
+VERSION = $(shell git describe --dirty --always)
+DATE_FMT = +%b %d %Y %H:%M:%S UTC
+
+ifdef SOURCE_DATE_EPOCH
+        BUILD_DATE ?= $(shell \
+                date -u -d "@$(SOURCE_DATE_EPOCH)" "$(DATE_FMT)" 2>/dev/null \
+                || date -u -r "@$(SOURCE_DATE_EPOCH)" "$(DATE_FMT)" 2>/dev/null \
+                || date -u "$(DATE_FMT)")
+else
+        BUILD_DATE ?= $(shell date -u "$(DATE_FMT)")
+endif
+
 INSTALL = install
 
-VERSION = $(shell git describe --dirty --always)
-
-CFLAGS  += -Wall -DVERSION="\"$(VERSION)\""
+CFLAGS += -Wall -DVERSION="\"$(VERSION)\"" -DBUILD_DATE="\"$(BUILD_DATE)\""
 LDFLAGS +=
 
 TARGETS := exchange
-MAINS   := $(addsuffix .o, $(TARGETS))
-OBJ     := $(MAINS)
+MAINS := $(addsuffix .o, $(TARGETS))
+OBJ := $(MAINS)
 
 .PHONY: all
 all: $(TARGETS)

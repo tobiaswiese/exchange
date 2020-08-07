@@ -38,8 +38,10 @@ Available Options:\n\
 }
 
 void version() {
-	printf("%s %s\n", program_name, VERSION);
-	printf("Build on %s %s.\n", __DATE__, __TIME__);
+        printf("%s %s\n", program_name, VERSION);
+#ifdef BUILD_DATE
+        printf("Build on %s.\n", BUILD_DATE);
+#endif
 }
 #endif // !SMALL
 
