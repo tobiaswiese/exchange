@@ -1,3 +1,5 @@
 *.[oa]
 *~
 /exchange
+# Manpages
+*.1.gz
